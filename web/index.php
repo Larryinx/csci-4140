@@ -6,14 +6,14 @@
 </head>
 
 <body>
-  <!-- <?php
+  <?php
   echo '<h1>Hello world!</h1>';
   echo '<p>This page uses PHP version '
     . phpversion()
     . '.</p>';
   include('db_connect.php');
-  ?> -->
-  <?php
+  ?>
+  <!-- <?php
   $image = new Imagick();
   $image->newImage(100, 100, new ImagickPixel('red'));
   $image->setImageFormat('png');
@@ -21,6 +21,6 @@
   header('Content-Type: image/png');
   echo $image;
   ?>
-</body>
+</body> -->
 
 </html>
