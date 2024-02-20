@@ -12,11 +12,8 @@
     . phpversion()
     . '.</p>';
   include('db_connect.php');
-  $image = new Imagick();
-  $image->newImage(100, 100, new ImagickPixel('red'));
-  $image->setImageFormat('png');
-  echo $image;
   ?>
+  <img src="generate_image.php" alt="Red Square" />
 </body>
 
 </html>
