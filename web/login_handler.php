@@ -14,7 +14,11 @@ function check_credentials($pdo, $username, $password) {
         if (password_verify($password, $hashed_password)) {
             // Correct credentials
             return true;
+        } else {
+            error_log("Password verify failed for user: $username");
         }
+    } else {
+        error_log("No user found with username: $username");
     }
   
     // Incorrect credentials or user does not exist
