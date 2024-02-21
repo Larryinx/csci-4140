@@ -2,25 +2,20 @@
 include('db_connect.php');
 
 function check_credentials($pdo, $username, $password) {
-    // Prepare a query to fetch the user's hashed password from the database
+    // Prepare a query to fetch the user's password from the database
     $stmt = $pdo->prepare('SELECT passwords FROM myusers WHERE name = :username');
     $stmt->execute([':username' => $username]);
   
     if ($stmt->rowCount() > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $hashed_password = $row['passwords'];
+        $stored_password = $row['passwords']; // This is plain text in your case
   
-        // Use password_verify to compare the plaintext password with the hashed password
-        if (password_verify($password, $hashed_password)) {
+        // Directly compare the plain text passwords
+        if ($password === $stored_password) {
             // Correct credentials
             return true;
-        } else {
-            error_log("Password verify failed for user: $username");
         }
-    } else {
-        error_log("No user found with username: $username");
     }
-  
     // Incorrect credentials or user does not exist
     return false;
 }
