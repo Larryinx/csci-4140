@@ -3,7 +3,7 @@ include('db_connect.php');
 
 function check_credentials($pdo, $username, $password) {
     // Prepare a query to fetch the user's hashed password from the database
-    $stmt = $pdo->prepare('SELECT passwords FROM your_user_table WHERE name = :username');
+    $stmt = $pdo->prepare('SELECT passwords FROM myusers WHERE name = :username');
     $stmt->execute([':username' => $username]);
   
     if ($stmt->rowCount() > 0) {
