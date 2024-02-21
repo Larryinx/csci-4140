@@ -18,3 +18,4 @@ RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf
 
 RUN chmod -R 775 /var/www/html/images
 RUN chown -R 775 /tmp
+RUN chown -R www-data:www-data /var/www/html/images
