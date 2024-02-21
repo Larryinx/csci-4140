@@ -27,12 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Assuming $conn is your PDO connection from db_connect.php
     if (check_credentials($conn, $username, $password)) {
-        setcookie('user', $username, time() + 3600); // Set cookie for 1 hour
-        header('Location: index.php'); // Redirect to index page
+        // Use ob_start at the beginning of the script to buffer any output
+        ob_start();
+        setcookie('user', $username, time() + 3600);
+        header('Location: index.php');
+        ob_end_flush(); // Send the output buffer and turn off output buffering
         exit();
     } else {
-        // Redirect back to the login page or show the error
-        header('Location: login.php?error=invalid'); // Redirect to login with error
+        ob_start();
+        header('Location: login.php?error=invalid');
+        ob_end_flush();
         exit();
     }
 }

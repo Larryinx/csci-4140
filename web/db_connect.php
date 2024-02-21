@@ -9,9 +9,10 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $stmt = $conn->query('SELECT version()');
     $version = $stmt->fetchColumn();
-    echo "<p>Successfully connected to the Database. Version: " . $version . "</p>";
+    // echo "<p>Successfully connected to the Database. Version: " . $version . "</p>";
 
 } catch(PDOException $e) {
-    echo "<p>Unable to connect to the database: " . $e->getMessage() . "</p>";
+    // echo "<p>Unable to connect to the database: " . $e->getMessage() . "</p>";
+    throw new Exception("Unable to connect to the database: " . $e->getMessage());
 }
 ?>
