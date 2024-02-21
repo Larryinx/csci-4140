@@ -4,7 +4,6 @@
 <head>
   <title>Photo Album</title>
   <?php
-  // If there's an error parameter in the URL, show an alert
   if (isset($_GET['error']) && $_GET['error'] === 'invalid') {
     echo "<script>alert('Invalid username or password. Please try again.');</script>";
   } else if (isset($_GET['invalid_file_type'])) {
@@ -20,8 +19,10 @@
     }
 
     .gallery img {
-      width: 100%;
-      height: auto;
+      width: auto;
+      height: 200px;
+      object-fit: cover;
+      object-position: center;
     }
 
     .pagination {
@@ -55,17 +56,12 @@
     echo '<p><a href="login.php">Login</a></p>';
   }
 
-  // Define the path to the photos directory
   $photoDir = 'images/';
-
-  // Fetch all jpg, gif, and png photos from the directory
   $allPhotos = glob($photoDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
 
-  // Filter photos to display based on user login status
   $photos = [];
   foreach ($allPhotos as $photo) {
     $photoName = basename($photo);
-    // Pattern to check if the photo is public or belongs to the logged-in user
     if (preg_match('/^\d+_public\./', $photoName) || ($username && preg_match('/^\d+_' . preg_quote($username, '/') . '\./', $photoName))) {
       $photos[] = $photo;
     }

@@ -1,8 +1,6 @@
 <?php
-// Include database connection
 include('db_connect.php');
 
-// Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if file was uploaded without errors
     if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0) {
@@ -20,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        // Verify MIME type of the file
         if (in_array($filetype, $allowed)) {
             // Find the next available number
             $files = glob("images/*");

@@ -2,7 +2,6 @@
 include('db_connect.php');
 
 function check_credentials($pdo, $username, $password) {
-    // Prepare a query to fetch the user's password from the database
     $stmt = $pdo->prepare('SELECT passwords FROM myusers WHERE name = :username');
     $stmt->execute([':username' => $username]);
   
@@ -23,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Assuming $conn is your PDO connection from db_connect.php
     if (check_credentials($conn, $username, $password)) {
         // Use ob_start at the beginning of the script to buffer any output
         ob_start();

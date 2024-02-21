@@ -1,16 +1,16 @@
 <?php
-include('db_connect.php'); // Ensure this points to your database connection script
+include('db_connect.php'); 
 
-// Function to apply filters using ImageMagick
-function applyFilter($imagePath, $filterType) {
+function applyFilter($imagePath, $filterType)
+{
     $imagick = new Imagick($imagePath);
 
     switch ($filterType) {
         case 'border':
-            $imagick->borderImage(new ImagickPixel('black'), 5, 5); // Adds a black border
+            $imagick->borderImage(new ImagickPixel('black'), 5, 5);
             break;
         case 'bw':
-            $imagick->setImageColorspace(Imagick::COLORSPACE_GRAY); // Converts to grayscale
+            $imagick->setImageColorspace(Imagick::COLORSPACE_GRAY);
             break;
         case 'original':
             // If 'original' is selected, restore the original image
@@ -21,10 +21,10 @@ function applyFilter($imagePath, $filterType) {
     }
 
     if ($filterType !== 'original') {
-        $imagick->writeImage($imagePath); // Write the changes to the same image file
+        $imagick->writeImage($imagePath); // Save the changes
     }
-    
-    $imagick->destroy(); // Clears the Imagick object from memory
+
+    $imagick->destroy();
 }
 
 if (isset($_GET['image'])) {
@@ -48,7 +48,7 @@ if (isset($_GET['image'])) {
 
     // Handle the finish action
     if (isset($_POST['finish'])) {
-        if ($_POST['finish'] !== 'original' && file_exists($originalImagePath)) {
+        if ($_POST['last_filter'] !== 'original' && file_exists($originalImagePath)) {
             unlink($originalImagePath);
         }
         header('Location: index.php');
@@ -60,28 +60,31 @@ if (isset($_GET['image'])) {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Photo Editor</title>
 </head>
+
 <body>
 
-<h1>Photo Editor</h1>
+    <h1>Photo Editor</h1>
 
-<?php if (isset($imagePath)): ?>
-    <!-- Display the current image -->
-    <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="Uploaded Image" />
-    
-    <!-- Form for applying filters -->
-    <form action="editor.php?image=<?php echo urlencode($_GET['image']); ?>" method="post">
-        <input type="submit" name="filter" value="border" />
-        <input type="submit" name="filter" value="bw" />
-        <input type="submit" name="filter" value="original" /> 
-        <input type="submit" name="discard" value="Discard" />
-        <input type="submit" name="finish" value="<?php echo isset($_POST['filter']) ? $_POST['filter'] : 'original'; ?>" />
-    </form>
-<?php else: ?>
-    <p>No image specified.</p>
-<?php endif; ?>
+    <?php if (isset($imagePath)): ?>
+        <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="Uploaded Image" />
+
+        <form action="editor.php?image=<?php echo urlencode($_GET['image']); ?>" method="post">
+            <input type="submit" name="filter" value="border" />
+            <input type="submit" name="filter" value="bw" />
+            <input type="submit" name="filter" value="original" />
+            <input type="submit" name="discard" value="Discard" />
+            <input type="hidden" name="last_filter"
+                value="<?php echo isset($_POST['filter']) ? $_POST['filter'] : 'original'; ?>" />
+            <input type="submit" name="finish" value="Finish" />
+        </form>
+    <?php else: ?>
+        <p>No image specified.</p>
+    <?php endif; ?>
 
 </body>
+
 </html>
