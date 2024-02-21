@@ -14,8 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verify file extension
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        if (!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
-
+        if (!array_key_exists($ext, $allowed)) {
+            $header = 'Location: index.php?invalid_file_type=' . $ext;
+            header($header);
+        }
         // Verify MIME type of the file
         if (in_array($filetype, $allowed)) {
             // Check whether file exists before uploading it

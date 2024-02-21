@@ -5,8 +5,10 @@
   <title>Photo Album</title>
   <?php
   // If there's an error parameter in the URL, show an alert
-  if (isset($_GET['error'])) {
+  if (isset($_GET['error']) && $_GET['error'] === 'invalid') {
     echo "<script>alert('Invalid username or password. Please try again.');</script>";
+  } else if (isset($_GET['invalid_file_type'])) {
+    echo "<script>alert('Invalid file type: " . htmlspecialchars($_GET['invalid_file_type']) . "');</script>";
   }
   ?>
   <style>
@@ -109,9 +111,7 @@
   ?>
 
   <?php
-  // Add a section for uploading photos
   if ($username) {
-    // Display file upload form only for logged-in users
     ?>
 
     <h2>Upload a Photo</h2>
@@ -127,8 +127,7 @@
     </form>
 
     <?php
-  } 
-  else {
+  } else {
     echo "<h2>You must be logged in to upload photos.</h2>";
   }
   ?>
