@@ -127,10 +127,11 @@
     </form>
 
     <?php
-  } else {
-    // Alert for non-logged-in users
-    echo "<script>alert('You must be logged in to upload photos.');</script>";
-  }
+  } 
+  // else {
+  //   // Alert for non-logged-in users
+  //   echo "<script>alert('You must be logged in to upload photos.');</script>";
+  // }
   ?>
 
 </body>
