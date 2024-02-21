@@ -116,7 +116,7 @@
 
     <h2>Upload a Photo</h2>
     <form action="upload.php" method="post" enctype="multipart/form-data">
-      <input type="file" name="upload photo" required>
+      <input type="file" name="photo" required>
       <label>
         <input type="radio" name="mode" value="public" checked> Public
       </label>
@@ -128,10 +128,9 @@
 
     <?php
   } 
-  // else {
-  //   // Alert for non-logged-in users
-  //   echo "<script>alert('You must be logged in to upload photos.');</script>";
-  // }
+  else {
+    echo "<h2>You must be logged in to upload photos.</h2>";
+  }
   ?>
 
 </body>

@@ -1,45 +1,52 @@
 <?php
+// Include database connection
 include('db_connect.php');
 
-// Check if the user is logged in
-$username = isset($_COOKIE['user']) ? htmlspecialchars($_COOKIE['user']) : null;
+// Check if the form has been submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if file was uploaded without errors
+    if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == 0) {
+        // Accepted file types
+        $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+        $filename = $_FILES["photo"]["name"];
+        $filetype = $_FILES["photo"]["type"];
+        $filesize = $_FILES["photo"]["size"];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $username) {
-    // Check if file is uploaded
-    if (isset($_FILES['photo']) && isset($_POST['mode'])) {
-        $file = $_FILES['photo'];
-        $mode = $_POST['mode'];
-        $uploadDir = 'images/';
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        // Verify file extension
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        if (!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
 
-        // Check for allowed file extensions
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        if (!in_array($ext, $allowedExtensions)) {
-            die('Invalid file type.');
-        }
+        // Verify MIME type of the file
+        if (in_array($filetype, $allowed)) {
+            // Check whether file exists before uploading it
+            if (file_exists("images/" . $filename)) {
+                echo $filename . " already exists.";
+            } else {
+                // Find the next available number
+                $files = glob("images/*");
+                $numbers = array_map(function($file) {
+                    preg_match('/images\/(\d+)_/', $file, $matches);
+                    return $matches[1] ?? 0;
+                }, $files);
 
-        // Determine the next number for the file name
-        $files = glob($uploadDir . '*');
-        $numbers = array_map(function ($f) {
-            return (int) filter_var(basename($f), FILTER_SANITIZE_NUMBER_INT);
-        }, $files);
-        $nextNumber = count($numbers) > 0 ? max($numbers) + 1 : 1;
+                $maxNumber = max($numbers);
+                $nextNumber = $maxNumber + 1;
 
-        // Prepare the file name
-        $newFileName = sprintf("%d_%s.%s", $nextNumber, $mode === 'private' ? $username : 'public', $ext);
+                // Determine the new filename
+                $username = htmlspecialchars($_COOKIE['user']);
+                $newName = $nextNumber . '_';
+                $newName .= isset($_POST['mode']) && $_POST['mode'] === 'private' ? $username : 'public';
+                $newName .= '.' . $ext;
 
-        // Move the uploaded file to the images directory
-        if (move_uploaded_file($file['tmp_name'], $uploadDir . $newFileName)) {
-            // Redirect to the photo editor or the index page
-            header('Location: index.php');
-            exit;
+                // Move the file to the images folder
+                move_uploaded_file($_FILES["photo"]["tmp_name"], "images/" . $newName);
+                echo "Your file was uploaded successfully.";
+            } 
         } else {
-            die('File upload failed.');
+            echo "Error: There was a problem uploading your file. Please try again."; 
         }
+    } else {
+        echo "Error: " . $_FILES["photo"]["error"];
     }
-} else {
-    // Redirect non-logged-in users back to the index page
-    header('Location: index.php?error=notloggedin');
-    exit;
 }
 ?>
