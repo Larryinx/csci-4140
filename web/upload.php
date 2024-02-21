@@ -17,35 +17,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!array_key_exists($ext, $allowed)) {
             $header = 'Location: index.php?invalid_file_type=' . $ext;
             header($header);
+            exit;
         }
+
         // Verify MIME type of the file
         if (in_array($filetype, $allowed)) {
-            // Check whether file exists before uploading it
-            if (file_exists("images/" . $filename)) {
-                echo $filename . " already exists.";
+            // Find the next available number
+            $files = glob("images/*");
+            $numbers = array_map(function($file) {
+                preg_match('/images\/(\d+)_/', $file, $matches);
+                return $matches[1] ?? 0;
+            }, $files);
+
+            $maxNumber = max($numbers);
+            $nextNumber = $maxNumber + 1;
+
+            // Determine the new filename
+            $username = htmlspecialchars($_COOKIE['user']);
+            $newName = $nextNumber . '_';
+            $newName .= isset($_POST['mode']) && $_POST['mode'] === 'private' ? $username : 'public';
+            $newName .= '.' . $ext;
+
+            // Move the file to the images folder
+            if (move_uploaded_file($_FILES["photo"]["tmp_name"], "images/" . $newName)) {
+                // Redirect to the photo editor with the new image's filename
+                header('Location: editor.php?image=' . urlencode($newName));
+                exit;
             } else {
-                // Find the next available number
-                $files = glob("images/*");
-                $numbers = array_map(function($file) {
-                    preg_match('/images\/(\d+)_/', $file, $matches);
-                    return $matches[1] ?? 0;
-                }, $files);
-
-                $maxNumber = max($numbers);
-                $nextNumber = $maxNumber + 1;
-
-                // Determine the new filename
-                $username = htmlspecialchars($_COOKIE['user']);
-                $newName = $nextNumber . '_';
-                $newName .= isset($_POST['mode']) && $_POST['mode'] === 'private' ? $username : 'public';
-                $newName .= '.' . $ext;
-
-                // Move the file to the images folder
-                move_uploaded_file($_FILES["photo"]["tmp_name"], "images/" . $newName);
-                echo "Your file was uploaded successfully.";
-            } 
+                echo "Error: There was a problem uploading your file. Please try again."; 
+            }
         } else {
-            echo "Error: There was a problem uploading your file. Please try again."; 
+            echo "Error: Invalid file type.";
         }
     } else {
         echo "Error: " . $_FILES["photo"]["error"];
