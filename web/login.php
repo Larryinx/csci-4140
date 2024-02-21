@@ -2,12 +2,6 @@
 <html>
 <head>
   <title>Login Page</title>
-  <?php
-  // If there's an error parameter in the URL, show an alert
-  if (isset($_GET['error'])) {
-      echo "<script>alert('Invalid username or password. Please try again.');</script>";
-  }
-  ?>
 </head>
 <body>
   <form action="login_handler.php" method="post">

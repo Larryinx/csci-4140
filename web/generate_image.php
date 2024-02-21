@@ -1,8 +1,6 @@
 <?php
-$image = new Imagick();
-$image->newImage(100, 100, new ImagickPixel('red'));
-$image->setImageFormat('png');
-
-header('Content-Type: image/png');
+header('Content-Type: image/jpg');
+$image = new Imagick('../images/1.jpg');
+$image->thumbnailImage(200, 0);
 echo $image;
 ?>

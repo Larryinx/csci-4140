@@ -8,9 +8,8 @@ function check_credentials($pdo, $username, $password) {
   
     if ($stmt->rowCount() > 0) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $stored_password = $row['passwords']; // This is plain text in your case
+        $stored_password = $row['passwords']; 
   
-        // Directly compare the plain text passwords
         if ($password === $stored_password) {
             // Correct credentials
             return true;
@@ -34,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         ob_start();
-        header('Location: login.php?error=invalid');
+        header('Location: index.php?error=invalid');
         ob_end_flush();
         exit();
     }

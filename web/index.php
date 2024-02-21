@@ -3,6 +3,12 @@
 
 <head>
   <title>Example PHP page for CSCI4140 24SP</title>
+  <?php
+  // If there's an error parameter in the URL, show an alert
+  if (isset($_GET['error'])) {
+      echo "<script>alert('Invalid username or password. Please try again.');</script>";
+  }
+  ?>
 </head>
 
 <body>
@@ -19,8 +25,9 @@
     // Show public photos
   }
   include('db_connect.php');
+  echo '<img src="generate_image.php" alt="Generated Image" />'; 
   ?>
-  <!-- <img src="generate_image.php" alt="Generated Image" /> -->
+  
 </body>
 
 </html>
