@@ -48,11 +48,9 @@ if (isset($_GET['image'])) {
 
     // Handle the finish action
     if (isset($_POST['finish'])) {
-        // If the original image was not chosen, delete the original backup
         if ($_POST['finish'] !== 'original' && file_exists($originalImagePath)) {
             unlink($originalImagePath);
         }
-        // Redirect to the index page
         header('Location: index.php');
         exit;
     }
