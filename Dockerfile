@@ -16,4 +16,4 @@ EXPOSE ${PORT}
 
 RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf
 
-RUN chmod -R 775 /var/www/html/web/images
+RUN chmod -R 775 /var/www/html/images
