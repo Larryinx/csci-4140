@@ -137,6 +137,7 @@
     echo '<button type="submit" name="init" value="Please Go Ahead">Initialize</button>';
     echo '<button type="submit" name="back" value="Go Back">Back</button>';
     echo '</form>';
+  }
   ?>
 </body>
 
