@@ -46,7 +46,6 @@ if (isset($_GET['image'])) {
         exit;
     }
 
-    // Handle the finish action
     if (isset($_POST['finish'])) {
         if ($_POST['last_filter'] !== 'original' && file_exists($originalImagePath)) {
             unlink($originalImagePath);

@@ -14,7 +14,6 @@
     .gallery {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      /* Display the images in 4 columns */
       grid-gap: 10px;
     }
 
@@ -128,6 +127,17 @@
   }
   ?>
 
+  <?php
+  if ($username == 'admin') {
+    echo '<h3><a href="admin.php?readyinit=true">System Management</a></h3>';
+  }
+  if (isset($_GET['readyinit']) && $_GET['readyinit'] == 'true') {
+    echo '<h2>System Initialization</h2>';
+    echo '<form action="init.php" method="post">';
+    echo '<button type="submit" name="init" value="Please Go Ahead">Initialize</button>';
+    echo '<button type="submit" name="back" value="Go Back">Back</button>';
+    echo '</form>';
+  ?>
 </body>
 
 </html>
