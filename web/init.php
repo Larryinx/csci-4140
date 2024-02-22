@@ -22,7 +22,7 @@ if (isset($_POST['init'])) {
 
     // Remove all users except admin from the database
     try {
-        $deleteQuery = "DELETE FROM myusers WHERE username != 'admin'";
+        $deleteQuery = "DELETE FROM myusers WHERE name != 'admin'";
         $conn->exec($deleteQuery);
 
         // $conn->exec("ALTER SEQUENCE users_id_seq RESTART WITH 1");
