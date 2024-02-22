@@ -8,6 +8,8 @@
     echo "<script>alert('Invalid username or password. Please try again.');</script>";
   } else if (isset($_GET['invalid_file_type'])) {
     echo "<script>alert('Invalid file type: " . htmlspecialchars($_GET['invalid_file_type']) . "');</script>";
+  } else if (isset($_GET['init']) && $_GET['init'] === 'success') {
+    echo "<script>alert('System initialized successfully.');</script>";
   }
   ?>
   <style>
@@ -128,15 +130,17 @@
   ?>
 
   <?php
-  if ($username == 'admin') {
-    echo '<h3><a href="index.php?readyinit=true">System Management</a></h3>';
-  }
-  if (isset($_GET['readyinit']) && $_GET['readyinit'] == 'true') {
+  if (isset($_GET['readyinit']) && $_GET['readyinit'] == 'true' && $username == 'admin') {
     echo '<h2>System Initialization</h2>';
+    echo '<p>Important: all data would be deleted and re-initialized. Please proceed with caution.</p>';
     echo '<form action="init.php" method="post">';
-    echo '<button type="submit" name="init" value="Please Go Ahead">Initialize</button>';
-    echo '<button type="submit" name="back" value="Go Back">Back</button>';
+    echo '<button type="submit" name="init" value="Initialize">Please Go Ahead</button>';
+    echo '<button type="submit" name="back" value="Back">Go Back</button>';
     echo '</form>';
+  } else {
+    if ($username == 'admin') {
+      echo '<h3><a href="index.php?readyinit=true">System Management</a></h3>';
+    }
   }
   ?>
 </body>
