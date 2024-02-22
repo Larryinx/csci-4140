@@ -129,7 +129,7 @@
 
   <?php
   if ($username == 'admin') {
-    echo '<h3><a href="admin.php?readyinit=true">System Management</a></h3>';
+    echo '<h3><a href="index.php?readyinit=true">System Management</a></h3>';
   }
   if (isset($_GET['readyinit']) && $_GET['readyinit'] == 'true') {
     echo '<h2>System Initialization</h2>';
