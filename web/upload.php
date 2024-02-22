@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 return $matches[1] ?? 0;
             }, $files);
 
-            $maxNumber = max($numbers);
+            $maxNumber = empty($numbers) ? 0 : max($numbers);
             $nextNumber = $maxNumber + 1;
 
             // Determine the new filename
