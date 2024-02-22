@@ -14,12 +14,6 @@ function clearImagesDirectory() {
 if (isset($_POST['init'])) {
     clearImagesDirectory();
 
-    // Re-create the images directory if needed
-    // if (!file_exists('images/')) {
-    //     mkdir('images/', 0775);
-    //     chown('images/', 'www-data');
-    // }
-
     // Remove all users except admin from the database
     try {
         $deleteQuery = "DELETE FROM myusers WHERE name != 'admin'";
