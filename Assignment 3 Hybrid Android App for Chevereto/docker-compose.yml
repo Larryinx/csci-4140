@@ -1,0 +1,38 @@
+---
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: chevereto_password_root
+      MYSQL_DATABASE: chevereto
+      MYSQL_USER: chevereto
+      MYSQL_PASSWORD: chevereto_password
+    networks:
+      mynetwork:
+        ipv4_address: 10.0.2.3  # Different IP but in the same subnet
+
+  app:
+    image: linuxserver/chevereto
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      CHEVERETO_DB_HOST: 10.0.2.3  # Use the IP of the MariaDB service
+      CHEVERETO_DB_NAME: chevereto
+      CHEVERETO_DB_USERNAME: chevereto
+      CHEVERETO_DB_PASSWORD: chevereto_password
+    depends_on:
+      - db
+    networks:
+      mynetwork:
+        ipv4_address: 10.0.2.2
+
+networks:
+  mynetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24

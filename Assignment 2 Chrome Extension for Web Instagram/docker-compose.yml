@@ -1,0 +1,76 @@
+---
+version: '3'
+ 
+services:
+  db:
+    image: mariadb
+    restart: always
+    networks:
+      - default
+    environment:
+      MYSQL_ROOT_PASSWORD: chevereto_password_root # 
+      MYSQL_DATABASE: chevereto # 
+      MYSQL_USER: chevereto # 
+      MYSQL_PASSWORD: chevereto_password # 
+ 
+  app:
+    image: linuxserver/chevereto # 
+    restart: always
+    ports:
+      - 8080:80 # 
+    networks:
+      - default
+    environment:
+      CHEVERETO_DB_HOST: db
+      CHEVERETO_DB_NAME: chevereto # 
+      CHEVERETO_DB_USERNAME: chevereto # 
+      CHEVERETO_DB_PASSWORD: chevereto_password # 
+    depends_on:
+      - db
+
+# services:
+#   database:
+#     image: mariadb:jammy
+#     networks:
+#       - chevereto
+#     volumes:
+#       - database:/var/lib/mysql
+#     restart: always
+#     healthcheck:
+#       test: ["CMD", "healthcheck.sh", "--su-mysql", "--connect"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 3
+#     environment:
+#       MYSQL_ROOT_PASSWORD: password
+#       MYSQL_DATABASE: chevereto
+#       MYSQL_USER: chevereto
+#       MYSQL_PASSWORD: user_database_password
+
+#   chevereto:
+#     image: chevereto/chevereto:latest
+#     networks:
+#       - chevereto
+#     volumes:
+#       - storage:/var/www/html/images/
+#     restart: always
+#     ports:
+#       - 8080:80 # 
+#     depends_on:
+#       database:
+#         condition: service_healthy
+#     expose:
+#       - 80
+#     environment:
+#       CHEVERETO_DB_HOST: database
+#       CHEVERETO_DB_USER: chevereto
+#       CHEVERETO_DB_PASS: user_database_password
+#       CHEVERETO_DB_PORT: 3306
+#       CHEVERETO_DB_NAME: chevereto
+#       CHEVERETO_ASSET_STORAGE_TYPE: local
+#       CHEVERETO_ASSET_STORAGE_URL: /images/_assets/
+#       CHEVERETO_ASSET_STORAGE_BUCKET: /var/www/html/images/_assets/
+ 
+networks:
+  default:
+    name: chevereto
